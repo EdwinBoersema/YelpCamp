@@ -1,0 +1,9 @@
+body {
+    background: white;
+}
+
+img {
+    max-width: 400px;
+    max-height: 400px;
+    margin: 20px;
+}
