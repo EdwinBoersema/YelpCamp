@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/EdwinBoersema/YelpCamp/issues"
   },
-  "homepage": "https://github.com/EdwinBoersema/YelpCamp#readme"
+  "homepage": "https://github.com/EdwinBoersema/YelpCamp#readme",
+  "dependencies": {
+    "ejs": "^2.7.1",
+    "express": "^4.17.1"
+  }
 }
