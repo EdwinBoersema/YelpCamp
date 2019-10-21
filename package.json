@@ -1,0 +1,19 @@
+{
+  "name": "yelpcamp",
+  "version": "1.0.0",
+  "description": "The YelpCamp Assignment from the Udemy Web Developer Bootcamp.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EdwinBoersema/YelpCamp.git"
+  },
+  "author": "Edwin Boersema",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EdwinBoersema/YelpCamp/issues"
+  },
+  "homepage": "https://github.com/EdwinBoersema/YelpCamp#readme"
+}
