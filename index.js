@@ -72,7 +72,7 @@ app.post("/campgrounds", (req, res) => {
 });
 
 app.get("/campgrounds/new", (req, res) => {
-    res.render("new.ejs");
+    res.render("new");
 });
 
 // starting the server on port 3000
