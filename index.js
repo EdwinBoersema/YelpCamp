@@ -28,7 +28,7 @@ app.get("/campgrounds", (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            res.render("campgrounds", {campgrounds: allCampgrounds});
+            res.render("index", {campgrounds: allCampgrounds});
         }
     });
 });
@@ -37,7 +37,8 @@ app.post("/campgrounds", (req, res) => {
     // get data from the form and add to campgrounds array
     const name = req.body.name;
     const image = req.body.image;
-    var newCampground = { name: name, image: image }
+    const desc = req.body.description;
+    var newCampground = { name: name, image: image, description: desc }
     // Create a new campground and save to database
     Campground.create(newCampground, (err, newlyCreated) =>{
         if (err) {
@@ -55,7 +56,15 @@ app.get("/campgrounds/new", (req, res) => {
 
 // SHOW route
 app.get("/campgrounds/:id", (req, res) => {
-    res.send("This is the SHOW ROUTE");
+    // Find the correct campground, then show it
+    Campground.findById(req.params.id, (err, foundCampground) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(foundCampground);
+            res.render("show", {campground: foundCampground});
+        }
+    });
 });
 
 // starting the server on port 3000

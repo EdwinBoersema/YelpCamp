@@ -19,14 +19,17 @@
         </div>
         <div class="row" style="display: flex; flex-wrap: wrap;">
             <% campgrounds.forEach((campgrounds) => {    %>
-                <div class="col">
-                    <div class="img-thumbnail">
-                        <img src=" <%= campgrounds.image %> ">
-                    </div>
+            <div class="col">
+                <div class="img-thumbnail">
+                    <img src=" <%= campgrounds.image %> ">
                     <div class="caption">
                         <%= campgrounds.name %>
                     </div>
+                    <p>
+                        <a class="btn btn-primary" href="/campgrounds/<%=campgrounds._id%>">More info</a>
+                    </p>
                 </div>
+            </div>
             <% }) %>
         </div>
     </div>
