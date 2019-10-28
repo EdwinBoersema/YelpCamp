@@ -51,5 +51,10 @@ app.get("/campgrounds/new", (req, res) => {
     res.render("new");
 });
 
+// SHOW route
+app.get("/campgrounds/:id", (req, res) => {
+    
+});
+
 // starting the server on port 3000
 app.listen(3000, () => console.log("YelpCamp server started."));
