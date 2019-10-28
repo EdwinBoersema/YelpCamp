@@ -27,7 +27,7 @@ const data = [
 
 function seedDB() {
     // Remove all campgrounds
-    Campground.remove({}, (err) => {
+    Campground.deleteMany({}, (err) => {
         if (err) {
             console.log(err);
         } else {

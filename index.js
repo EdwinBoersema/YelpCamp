@@ -8,7 +8,9 @@ const seedDB = require("./seeds");
 seedDB();
 mongoose.connect("mongodb://localhost:27017/yelp_camp", {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false
 });
 
 app.set("view engine", "ejs");
@@ -53,7 +55,7 @@ app.get("/campgrounds/new", (req, res) => {
 
 // SHOW route
 app.get("/campgrounds/:id", (req, res) => {
-    
+    res.send("This is the SHOW ROUTE");
 });
 
 // starting the server on port 3000
