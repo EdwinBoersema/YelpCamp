@@ -5,10 +5,9 @@ const mongoose = require("mongoose");
 const Campground = require("./models/campground.js");
 const seedDB = require("./seeds");
 const Comment = require("./models/comments");
-
-
-// starting the server on port 3000
-app.listen(3000, () => console.log("YelpCamp server started."));
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require("./models/user");
 
 // Uncomment to reseed te database on server startup
 // seedDB();
@@ -109,3 +108,7 @@ app.post("/campgrounds/:id/comments", (req, res) => {
         }
     });
 });
+
+
+// starting the server on port 3000
+app.listen(3000, () => console.log("YelpCamp server started."));
