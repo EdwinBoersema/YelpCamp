@@ -3,7 +3,9 @@ const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const Campground = require("./models/campground.js");
+const seedDB = require("./seeds");
 
+seedDB();
 mongoose.connect("mongodb://localhost:27017/yelp_camp", {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -17,25 +19,6 @@ app.use(express.static("public"));
 app.get("/", (req, res) => {
     res.render("landing");
 });
-
-// Campground.create({ 
-//     name: "Thornbury Hills", 
-//     image: "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/0e7f3f60632151.5a544ee6a44c7.jpg" 
-// }, (err, campground) => {
-//     if (err) {
-//         console.log(err);
-//     } else {
-//         console.log("New campground created:");
-//         console.log(campground);
-//     }
-// });
-
-// campgrounds array
-// const campgrounds = [
-//     { name: "Salmon Creek", image: "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/49549058324311.59f8339842af3.png" },
-//     { name: "Thornbury Hills", image: "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/0e7f3f60632151.5a544ee6a44c7.jpg" },
-//     { name: "Sunset Plains", image: "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/54999c60632151.5a5450ae5dd49.jpg" }
-// ];
 
 //Campgrounds route
 app.get("/campgrounds", (req, res) => {
