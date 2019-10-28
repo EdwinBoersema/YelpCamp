@@ -8,6 +8,9 @@
         <div>
             <%= campground.description%>
         </div>
+        <p>
+            <a class="btn btn-primary" href="/campgrounds/<%=campground._id%>/comments/new">Add new comment</a>
+        </p>
     </div>
     <div class="container">
         <% campground.comments.forEach(function(comment){ %>
