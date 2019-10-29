@@ -24,6 +24,18 @@ mongoose.connect("mongodb://localhost:27017/yelp_camp", {
     err => { console.log('Can not connect to the database'+ err)}
 );
 
+// Passport configuration
+app.use(require("express-session")({
+        secret: "flaters",
+        resave: false,
+        saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -61,7 +73,7 @@ app.post("/campgrounds", (req, res) => {
     });
 });
 
-app.get("/campgrounds/new", (req, res) => {
+app.get("/campgrounds/new", isLoggedIn, (req, res) => {
     res.render("new");
 });
 
@@ -79,7 +91,7 @@ app.get("/campgrounds/:id", (req, res) => {
 });
 
 // COMMENTS Route
-app.get("/campgrounds/:id/comments/new", (req, res) => {
+app.get("/campgrounds/:id/comments/new", isLoggedIn, (req, res) => {
     // find campground
     Campground.findById(req.params.id, (err, foundCampground) => {
         if (err) {
@@ -90,7 +102,7 @@ app.get("/campgrounds/:id/comments/new", (req, res) => {
     });
 });
 
-app.post("/campgrounds/:id/comments", (req, res) => {
+app.post("/campgrounds/:id/comments", isLoggedIn, (req, res) => {
     Campground.findById(req.params.id, (err, campground) =>{
         if (err) {
             console.log(err);
@@ -109,6 +121,56 @@ app.post("/campgrounds/:id/comments", (req, res) => {
     });
 });
 
+// AUTHENTICATION ROUTES
+
+// show register form
+app.get("/register", (req, res) =>{
+    res.render("register");
+});
+
+// handle sign up logic
+app.post("/register", (req, res) => {
+    let newUser = new User({username: req.body.username});
+    User.register(newUser, req.body.password, (err, user) => {
+        if (err) {
+            console.log(err);
+            return res.render("register");
+        }
+        passport.authenticate("local")(req, res, () => {
+            res.redirect("/campgrounds");
+        });
+    }); 
+});
+
+// LOGIN ROUTE
+
+// login form
+app.get("/login", (req, res) =>{
+    res.render("login");
+});
+
+
+// handling login logic
+app.post("/login", passport.authenticate("local", {
+    successRedirect: "/campgrounds",
+    failureRedirect: "/login"
+}), (req, res) =>{
+
+});
+
+// LOGOUT ROUTE
+
+app.get("/logout", (req, res) => {
+    req.logOut();
+    res.redirect("/");
+});
+
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+}
 
 // starting the server on port 3000
 app.listen(3000, () => console.log("YelpCamp server started."));
