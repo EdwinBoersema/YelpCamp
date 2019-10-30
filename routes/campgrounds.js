@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const Campground = require("../models/campground");
-const Comment = require("../models/comments");
 
 //Campgrounds route
 router.get("/", (req, res) => {
@@ -14,12 +13,27 @@ router.get("/", (req, res) => {
     });
 });
 
-router.post("/", (req, res) => {
+// CREATE ROUTE
+router.get("/new", isLoggedIn, (req, res) => {
+    res.render("new");
+});
+
+
+router.post("/", isLoggedIn, (req, res) => {
     // get data from the form and add to campgrounds array
-    const name = req.body.name;
-    const image = req.body.image;
-    const desc = req.body.description;
-    var newCampground = { name: name, image: image, description: desc }
+    let name = req.body.name;
+    let image = req.body.image;
+    let desc = req.body.description;
+    let author = {
+        id: req.user._id,
+        username: req.user.username
+    }
+    var newCampground = {
+         name: name, 
+         image: image, 
+         description: desc,
+         author: author
+        }
     // Create a new campground and save to database
     Campground.create(newCampground, (err, newlyCreated) =>{
         if (err) {
@@ -29,10 +43,6 @@ router.post("/", (req, res) => {
             res.redirect("/campgrounds");
         }
     });
-});
-
-router.get("/new", isLoggedIn, (req, res) => {
-    res.render("new");
 });
 
 // SHOW route
@@ -47,5 +57,13 @@ router.get("/:id", (req, res) => {
         }
     });
 });
+
+// middleware
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+}
 
 module.exports = router;
