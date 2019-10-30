@@ -15,6 +15,7 @@
 
     <div>
         <%= currentUser.username %>
+        <%= currentUser._id %>
         <% let admin = currentUser.roles.includes("admin"); %>
         <%= admin %>
     </div>
@@ -34,6 +35,9 @@
                     <p>
                         <a class="btn btn-primary" href="/campgrounds/<%=campgrounds._id%>">More info</a>
                     </p>
+                    <% if(campgrounds.author.id.equals(currentUser._id)) { %>
+                        <button class="btn btn-danger"> SUCCESS</button>
+                    <% } %>
                 </div>
             </div>
             <% }) %>
