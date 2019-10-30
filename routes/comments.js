@@ -2,9 +2,10 @@ const express = require("express");
 const router = express.Router({mergeParams: true});
 const Campground = require("../models/campground");
 const Comment = require("../models/comments");
+const mw = require("../middleware/index");
 
 // COMMENTS Route
-router.get("/new", isLoggedIn, (req, res) => {
+router.get("/new", mw.isLoggedIn, (req, res) => {
     // find campground
     Campground.findById(req.params.id, (err, foundCampground) => {
         if (err) {
@@ -15,7 +16,7 @@ router.get("/new", isLoggedIn, (req, res) => {
     });
 });
 
-router.post("/", isLoggedIn, (req, res) => {
+router.post("/", mw.isLoggedIn, (req, res) => {
     Campground.findById(req.params.id, (err, campground) =>{
         if (err) {
             console.log(err);
@@ -38,13 +39,6 @@ router.post("/", isLoggedIn, (req, res) => {
         }
     });
 });
-
-function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
-        return next();
-    }
-    res.redirect("/login");
-}
 
 module.exports = router;
 

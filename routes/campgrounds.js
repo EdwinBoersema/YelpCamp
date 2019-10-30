@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const Campground = require("../models/campground");
+const mw = require("../middleware/index");
 
 //Campgrounds route
-router.get("/", (req, res) => {
+router.get("/", mw.isLoggedIn, (req, res) => {
     Campground.find({}, (err, allCampgrounds) => {
         if (err) {
             console.log(err);
@@ -14,12 +15,11 @@ router.get("/", (req, res) => {
 });
 
 // CREATE ROUTE
-router.get("/new", isLoggedIn, (req, res) => {
+router.get("/new", mw.isLoggedIn, (req, res) => {
     res.render("new");
 });
 
-
-router.post("/", isLoggedIn, (req, res) => {
+router.post("/", mw.isLoggedIn, (req, res) => {
     // get data from the form and add to campgrounds array
     let name = req.body.name;
     let image = req.body.image;
@@ -46,7 +46,7 @@ router.post("/", isLoggedIn, (req, res) => {
 });
 
 // SHOW route
-router.get("/:id", (req, res) => {
+router.get("/:id", mw.isLoggedIn, (req, res) => {
     // Find the correct campground, then show it
     Campground.findById(req.params.id).populate("comments").exec((err, foundCampground) => {
         if (err) {
@@ -58,28 +58,5 @@ router.get("/:id", (req, res) => {
         }
     });
 });
-
-// middleware
-function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
-        return next();
-    }
-    res.redirect("back")
-}
-
-function checkCO(req, res, next) {
-   Campground.findById(req.params.id, (err, foundCampground) => {
-    if (err) {
-        res.redirect("back");
-    } else {
-        // check if the user owns the campground
-        if (foundCampground.author.id.equals(req.user._id)) {
-            next();
-        } else {
-            redirect("back");
-        }
-    }
-   });
-}
 
 module.exports = router;

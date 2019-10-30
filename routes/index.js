@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const User = require("../models/user");
+const mw = require("../middleware/index");
 
 // DEFAULT ROUTE 
 
@@ -49,11 +50,11 @@ router.post("/login", passport.authenticate("local", {
 
 });
 // EDIT USER
-router.get("/edit", isLoggedIn, (req, res) => {
+router.get("/edit", mw.isLoggedIn, (req, res) => {
     res.render("edituser");
 });
 
-router.put("/edit", isLoggedIn, (req, res) => {
+router.put("/edit", mw.isLoggedIn, (req, res) => {
     let role = req.body.role;
     console.log(req.body.role);
     User.findByIdAndUpdate(req.user._id, {$addToSet: {roles: role}}, (err, user) =>{
@@ -72,12 +73,5 @@ router.get("/logout", (req, res) => {
     req.logOut();
     res.redirect("/");
 });
-
-function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
-        return next();
-    }
-    res.redirect("/login");
-}
 
 module.exports = router;
