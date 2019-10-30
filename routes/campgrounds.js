@@ -53,6 +53,7 @@ router.get("/:id", (req, res) => {
             console.log(err);
         } else {
             console.log("Showing: " +foundCampground.name);
+            console.log(req.user);
             res.render("show", {campground: foundCampground});
         }
     });
@@ -63,7 +64,22 @@ function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
         return next();
     }
-    res.redirect("/login");
+    res.redirect("back")
+}
+
+function checkCO(req, res, next) {
+   Campground.findById(req.params.id, (err, foundCampground) => {
+    if (err) {
+        res.redirect("back");
+    } else {
+        // check if the user owns the campground
+        if (foundCampground.author.id.equals(req.user._id)) {
+            next();
+        } else {
+            redirect("back");
+        }
+    }
+   });
 }
 
 module.exports = router;

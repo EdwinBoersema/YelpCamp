@@ -18,7 +18,10 @@ router.get("/register", (req, res) =>{
 
 // handle sign up logic
 router.post("/register", (req, res) => {
-    let newUser = new User({username: req.body.username});
+    let newUser = new User({
+        username: req.body.username,
+        roles: "user"
+    });
     User.register(newUser, req.body.password, (err, user) => {
         if (err) {
             console.log(err);
@@ -44,6 +47,23 @@ router.post("/login", passport.authenticate("local", {
     failureRedirect: "/login"
 }), (req, res) =>{
 
+});
+// EDIT USER
+router.get("/edit", isLoggedIn, (req, res) => {
+    res.render("edituser");
+});
+
+router.put("/edit", isLoggedIn, (req, res) => {
+    let role = req.body.role;
+    console.log(req.body.role);
+    User.findByIdAndUpdate(req.user._id, {$addToSet: {roles: role}}, (err, user) =>{
+        if (err) {
+            console.log(err);
+            res.redirect("/");
+        } else {
+            res.redirect("/campgrounds");
+        }
+    });
 });
 
 // LOGOUT ROUTE

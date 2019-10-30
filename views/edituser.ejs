@@ -1,0 +1,11 @@
+<% include partials/header %>
+
+<h1>Edit <%= currentUser.name %> 's roles</h1>
+
+<form action="/edit?_method=PUT" method="POST">
+    <input class="form-control" name="role" type="text" placeholder="role">
+    <input class="form-control" type="submit" value="Edit Role">
+</form>
+
+
+<% include partials/footer %>
