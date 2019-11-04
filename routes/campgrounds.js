@@ -4,7 +4,7 @@ const Campground = require("../models/campground");
 const mw = require("../middleware/index");
 
 //Campgrounds route
-router.get("/", mw.isLoggedIn, (req, res) => {
+router.get("/", (req, res) => {
     Campground.find({}, (err, allCampgrounds) => {
         if (err) {
             console.log(err);
@@ -46,7 +46,7 @@ router.post("/", mw.isLoggedIn, (req, res) => {
 });
 
 // SHOW route
-router.get("/:id", mw.isLoggedIn, (req, res) => {
+router.get("/:id", (req, res) => {
     // Find the correct campground, then show it
     Campground.findById(req.params.id).populate("comments").exec((err, foundCampground) => {
         if (err) {
